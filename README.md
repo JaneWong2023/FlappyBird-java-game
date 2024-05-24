@@ -1,6 +1,5 @@
-## Getting Started
-
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Introduction
+This is a small game called "FlappyBird".It is only written in Java and this game is a exercise for my frist java learning.
 
 ## Folder Structure
 
