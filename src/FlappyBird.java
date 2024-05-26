@@ -34,13 +34,37 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
         }
     }
     
+    //pipe
+    int pipeX = boardwidth;
+    int pipeY = 0;
+    int pipeWidth = 64;
+    int pipeHeight= 512;
+
+    class Pipe{
+        int x = pipeX;
+        int y = pipeY;
+        int width =pipeWidth;
+        int height = pipeHeight;
+        Image img;
+        boolean passed = false;
+
+
+        Pipe(Image img){
+            this.img = img;
+        }
+    }
+
+
     //game logic
     Bird bird;
+    int velocityX = -4;//管子向左移（simulate the bird moving right）；
     int velocityY = 0; //向上的一个速度，每秒往上飞x个像素；
     int gravity = 1;//模拟重力；
 
+    ArrayList<Pipe> pipes;
+
     Timer gameLoop;
-    
+    Timer placePipesTimer;
 
     FlappyBird() {
         setPreferredSize(new Dimension(boardwidth, boardheight));
@@ -55,12 +79,26 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
         bottomPipeImg = new ImageIcon(getClass().getResource("./images/bottompipe.png")).getImage();
         //bird
         bird = new Bird (birdImg);
+        pipes = new ArrayList<Pipe>();
+        //place pipes timer
+        placePipesTimer = new Timer(1500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                placePipes();
+            }
+        });
+        placePipesTimer.start();
 
         //game timer
         gameLoop = new Timer(1000/60,this);//60 times a second;
         gameLoop.start();
     }
-    
+        
+    public void placePipes(){
+        Pipe topPipe =new Pipe(topPipeImg);
+        pipes.add(topPipe);
+    }
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         draw(g);
@@ -73,6 +111,12 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
 
         //bird
         g.drawImage(bird.img,bird.x,bird.y,bird.width,bird.height,null);
+        
+        //pipes
+        for (int i = 0;i< pipes.size();i++){
+            Pipe pipe = pipes. get(i);
+            g.drawImage(pipe.img,pipe.x,pipe.y,pipe.width,pipe.height,null);
+        }
     }
 
 public void move() {
@@ -80,6 +124,12 @@ public void move() {
     velocityY += gravity;//速度受重力影响
     bird.y += velocityY ;//小鸟位移
     bird.y = Math.max(bird.y,0);//不要飞出屏幕
+
+    //pipes
+    for (int i =0;i < pipes.size();i++){
+        Pipe pipe = pipes.get(i);
+        pipe.x += velocityX;
+    }
 }
 
     @Override
