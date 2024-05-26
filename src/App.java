@@ -16,6 +16,7 @@ public class App {
     FlappyBird flappyBird = new FlappyBird();//create an object of the game
     frame.add(flappyBird);//add the game to the frame
     frame.pack();//pack the frame
+    flappyBird.requestFocus();
     frame.setVisible(true);//to make the frame visible
 
     }
