@@ -7,7 +7,7 @@ import java.util.Random; // 导入Random类，用于生成随机数
 import javax.swing.*; // 导入Swing中的所有类，用于创建更现代化的GUI
 
 
-public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 继承JPanel类，自定义一个游戏面板
+public class FlappyBird extends JPanel implements ActionListener,KeyListener,MouseListener{// 继承JPanel类，自定义一个游戏面板
     int boardwidth = 360;
     int boardheight = 640;
 
@@ -72,6 +72,7 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
         // setBackground(Color.blue);
         setFocusable(true);
         addKeyListener(this);
+        addMouseListener(this);
 
         //load images
         backgroundImg = new ImageIcon(getClass().getResource("./images/flappybirdbg.png")).getImage();
@@ -161,5 +162,24 @@ public void move() {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    
+            velocityY = -9; 
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
