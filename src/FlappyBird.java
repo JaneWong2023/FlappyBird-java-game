@@ -66,6 +66,7 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener,Mou
     Random random = new Random();
     Timer gameLoop;
     Timer placePipesTimer;
+    Boolean gameOver = false;
 
     FlappyBird() {
         setPreferredSize(new Dimension(boardwidth, boardheight));
@@ -140,13 +141,34 @@ public void move() {
     for (int i =0;i < pipes.size();i++){
         Pipe pipe = pipes.get(i);
         pipe.x += velocityX;
+
+        if (collision(bird, pipe)){
+            gameOver = true;
+        }
+    }
+    
+    //两种gameOver发生的情况
+    //小鸟掉出屏幕的情况
+    if (bird.y > boardheight) {
+        gameOver = true;
     }
 }
+    //小鸟跟管子碰撞的情况
+    public boolean collision(Bird a,Pipe b){
+        return a.x < b.x + b.width &&
+               a.x + a.width >b.x &&
+               a.y < b.y + b.height &&
+               a.y + a.height > b.y;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
         repaint();
+        if (gameOver){;
+            placePipesTimer.stop();
+            gameLoop.stop();
+        }
     }
 
     @Override
