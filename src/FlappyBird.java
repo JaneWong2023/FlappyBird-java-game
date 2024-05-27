@@ -1,6 +1,7 @@
 //This is the file""FlappyBird.java"" where the game is created. 
 import java.awt.*; // 导入AWT中的所有类，用于创建GUI和绘制图形
 import java.awt.event.*; // 导入AWT事件处理包，用于处理事件（如按键、鼠标点击）
+import java.nio.channels.Pipe;
 import java.util.ArrayList; // 导入ArrayList类，用于创建动态数组
 import java.util.Random; // 导入Random类，用于生成随机数
 import javax.swing.*; // 导入Swing中的所有类，用于创建更现代化的GUI
@@ -62,7 +63,7 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
     int gravity = 1;//模拟重力；
 
     ArrayList<Pipe> pipes;
-
+    Random random = new Random();
     Timer gameLoop;
     Timer placePipesTimer;
 
@@ -95,8 +96,17 @@ public class FlappyBird extends JPanel implements ActionListener,KeyListener{// 
     }
         
     public void placePipes(){
+        //(random是0到1)-->(0 - 128 -(0~1)*256)-->管子往上移1/4到3/4之间
+        int randomPipeY = (int)(pipeY - pipeHeight/4-Math.random()*(pipeHeight/2));
+        int openingSpace =boardheight/4;
+        
         Pipe topPipe =new Pipe(topPipeImg);
+        topPipe.y = randomPipeY;
         pipes.add(topPipe);
+        
+        Pipe bottomPipe = new Pipe(bottomPipeImg);
+        bottomPipe.y =topPipe.y +pipeHeight +openingSpace;
+        pipes.add(bottomPipe);
     }
 
     public void paintComponent(Graphics g){
